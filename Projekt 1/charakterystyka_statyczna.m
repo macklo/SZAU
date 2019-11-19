@@ -8,25 +8,24 @@ addpath("./abstraction")
 workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
 
 sim_length = 4000;
-jumpK = 100;
+jumpK      = 100;
 
-legends = [];
-y = [];
-ystat = [];
-ystatlin = []';
-
-jumps = -1:0.2:1;
+jumps  = -1:0.2:1;
 uJumps = workpoint.u + jumps * workpoint.u;
 
-figure
-	hold on
-	grid on
+y       = cell(size(jumps));
+ylin    = cell(size(jumps));
+legends = cell(size(jumps));
+
+ystat    = zeros(size(jumps));
+ystatlin = zeros(size(jumps));
 
 tanks       = TankSystem(workpoint);
 linearTanks = LinearTankSystem(workpoint);
 	
-for uJump = uJumps
-	uJump
+for i = 1:size(uJumps, 2)
+	uJump = uJumps(i)
+	legends{i} = "F_{1in} = " + num2str(uJump);
 	
 	tanks.resetToWorkPoint(workpoint);
 	linearTanks.resetToWorkPoint(workpoint);
@@ -34,12 +33,12 @@ for uJump = uJumps
 	u = workpoint.u.*ones(1, sim_length);
 	u(1, jumpK:end) = uJump;
 	
-	y = workpoint.y.*ones(1, sim_length);
-	ylin = workpoint.y.*ones(1, sim_length);
+	y{i}    = workpoint.y.*ones(1, sim_length);
+	ylin{i} = workpoint.y.*ones(1, sim_length);
 	
 	for k = 1:1:sim_length
-		y(k) = tanks.getOutput();
-		ylin(k) = linearTanks.getOutput();
+		y{i}(k)    = tanks.getOutput();
+		ylin{i}(k) = linearTanks.getOutput();
 		
 		tanks.setControl(u(k));
 		linearTanks.setControl(u(k));
@@ -47,18 +46,35 @@ for uJump = uJumps
 		tanks.nextIteration();
 		linearTanks.nextIteration();
 	end
-
-	stairs(y)
-	stairs(ylin, '--')
-	ystat = [ystat y(end)];
-	ystatlin = [ystatlin ylin(end)];
+	
+	ystat(i)    = y{i}(end);
+	ystatlin(i) = ylin{i}(end);
 end
+
 
 figure
 	grid on
 	hold on
-	plot(uJumps, ystat, '-o');
-	plot(uJumps, ystatlin, '-o');
-	xlabel("F_1 [cm^3/s]");
+	for i = 1:size(uJumps, 2)
+		stairs(y{i})
+	end
+	
+	set(gca, 'ColorOrderIndex', 1)
+	
+	for i = 1:size(uJumps, 2)
+		stairs(ylin{i}, '--')
+	end
+	title ("Przebiegi wyjœcia modeli dla ró¿nych skoków sterowania")
+	xlabel("t [s]")
+	ylabel("h_2 [cm]")
+	legend(legends, 'Location', 'EastOutside')
+
+figure
+	grid on
+	hold on
+	plot(uJumps, ystat);
+	plot(uJumps, ystatlin);
+	xlabel("F_{1in} [cm^3/s]");
 	ylabel("h_2 [cm]");
 	title("Charakterystyka statyczna");
+	legend("Model nieliniowy", "Model liniowy")
