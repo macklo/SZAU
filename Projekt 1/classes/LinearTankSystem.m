@@ -77,7 +77,7 @@ classdef LinearTankSystem < AbstractObject
 		
 		function resetToWorkPoint(self, workPoint)
 			self.uk = workPoint.u - workPoint.u;
-			self.yk = workPoint.y - workPoint.y;
+			self.yk = workPoint.y;
 			self.xk = workPoint.x - workPoint.x;
 
 			self.u = self.uk*ones(1, self.tau);
