@@ -10,8 +10,8 @@ classdef LinearTankSystem < AbstractObject
 		tau = 100;
 		h2  = 36;
 		
-		u0 = 90;
-		y0 = 36
+		u0;
+		y0;
 		
 		V1 = 0;
 		V2 = 0;
@@ -34,6 +34,8 @@ classdef LinearTankSystem < AbstractObject
 			self@AbstractObject(ny, nu, nd, Ts);
 			
 			self.x0 = workpoint.x;
+			self.u0 = workpoint.u;
+			self.y0 = workpoint.y;
 			self.V1 = self.x0(1);
 			self.V2 = self.x0(2);
 			
