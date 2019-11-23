@@ -89,8 +89,13 @@ function [a, c, h2r0] = takagi_sugeno(il, draw)
                 %modele liniowe modelu rozmytego
                 V1(2+r,t) = V1(2+il+1,t-1) + (F1(t-1)-F1r0(r)) + (FD(t-1)-FD0)   - alfa1/2*h1r0(r)^-0.5 * (h1(2+il+1,t-1) - h1r0(r));
                 V2(2+r,t) = V2(2+il+1,t-1) + alfa1/2*h1r0(r)^-0.5 * (h1(2+il+1,t-1) - h1r0(r))    - alfa2/2*h2r0(r)^-0.5 * (h2(2+il+1,t-1) - h2r0(r));
-                h1(2+r,t) = h1r0(r) + (V1(2+il+1,t)- V1r0(r))/A1;
-                h2(2+r,t) = h2r0(r) + 1/2*(C2*V2r0(r))^-0.5 * (V2(2,t) - V2r0(r));
+                h1(2+r,t) = h1r0(r) + (V1(2+r,t)- V1r0(r))/A1;
+                h2(2+r,t) = h2r0(r) + 1/2*(C2*V2r0(r))^-0.5 * (V2(2+r,t) - V2r0(r));
+                
+%                 V1(2+r,t) = V1(2+il+1,t-1) + (F1(t-1) - Fr0(r)) + (FD(t-1) - FD0) - a1/2*hr0(r)^-0.5 * (h1(2+il+1,t-1) - hr0(r));
+%                 V2(2+r,t) = V2(2+il+1,t-1) + a1/2*hr0(r)^-0.5 * (h1(2+il+1,t-1) - hr0(r)) - a1/2*hr0(r)^-0.5 * (h2(2+il+1,t-1) - hr0(r));
+%                 h1(2+r,t) = hr0(r) + 1/2*(C1*Vr0(r))^-0.5 * (V1(2+r,t) - Vr0(r));
+%                 h2(2+r,t) = hr0(r) + 1/2*(C2*Vr0(r))^-0.5 * (V2(2+r,t) - Vr0(r));
                 
                 
                 %obliczanie wag
