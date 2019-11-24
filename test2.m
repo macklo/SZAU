@@ -6,7 +6,7 @@
 
 
 
-
+clear
 addpath("./classes")
 addpath("./abstraction")
 il =2;
@@ -23,7 +23,7 @@ FD = 30;
 ymax = 110.2;
 ymin = 2.25;
 dy = (ymax-ymin)/il;
-a = 0.5;
+a = 3;
 c = ymin+dy:dy:ymax-dy;
 h2r0 = ones(1,il);
 h2r0(1) = (c(1)+ymin)/2-1;
@@ -35,18 +35,14 @@ if il > 2
     
 end
 
+lintanks = cell(il ,1);
 for i= 1:il
     workpoints(i) = calculate_workpoint(h2r0(i));
-%     lintanks(i) = LinearTankSystem(workpoints(1));
-%     lintanks(i).resetToWorkPoint(workpoints(1));
+     lintanks{i} = LinearTankSystem(workpoints(i));
+     lintanks{i}.resetToWorkPoint(workpoints(i));
     
     
 end
-
-lintanks1 = LinearTankSystem(workpoints(1))
-lintanks2 = LinearTankSystem(workpoints(2))
-lintanks1.resetToWorkPoint(workpoints(1));
-lintanks2.resetToWorkPoint(workpoints(2));
 
 V1r0 = A1*(alfa2/alfa1)^2*h2r0;
 V2r0 = C2.*h2r0.*h2r0;
@@ -106,11 +102,11 @@ for i = 135:135
     V1 = A1*h10 * ones(2+il+1,n);
     V2 = C2*h20*h20 * ones(2+il+1,n);
     w = ones(1,il);
+    wk = ones(1,il);
     dynout = workpoint.y*ones(1,n);
     linout = workpoint.y*ones(1,n);
-    fuzz(1,:) = workpoint.y*ones(1,n);
-    fuzz(2,:) = workpoint.y*ones(1,n);
-    fuzzout(1,:) = workpoint.y*ones(1,n);
+    fuzzy = h20*ones(il,n);
+    fuzzyout = h20*ones(1,n);
     for t = 2 : n
         
         %model dynamiczny
@@ -124,18 +120,26 @@ for i = 135:135
         lintank.nextIteration();
         
         %modele liniowe modelu rozmytego
-        lintanks1.setControl(u11(t));
-        lintanks2.setControl(u11(t));
-        fuzz(1,t)   = lintanks1.getOutput();
-        fuzz(2,t)   = lintanks2.getOutput();
-        lintanks1.nextIteration();
-        lintanks2.nextIteration();
+        for k= 1:il
+        lintanks{k}.setControl(u11(t));
+        fuzzy(k,t)   = lintanks{k}.getOutput();
+        lintanks{k}.nextIteration();
+    
+            if k == 1
+                wk(k) = sigmf(fuzzyout(1,t-1) , [-a c(1)]);
+                
+                
+            elseif k == il
+                wk(k) = sigmf(fuzzyout(1,t-1) , [a c(il-1)]);
+            else
+                wk(k) = dsigmf(fuzzyout(1,t-1), [a c(k-1) a c(k)]);
+            end
+    
+    
+        end
         
+        fuzzyout(1,t) = wk*fuzzy(:, t)/sum(wk);
         
-        
-        wk(1) = sigmf(fuzz(1,t) , [-a c(1)]);
-        wk(2) = sigmf(fuzz(2,t) , [a c(il-1)]);
-        fuzzout(t) =  wk*fuzz(:, t)/sum(wk);
         
         
         %model dynamiczny
@@ -183,13 +187,16 @@ for i = 135:135
     
 end
 if draw
-    plot(h2(1,start:end),'g')
-    plot(h2(2,start:end),'r')
-    plot(h2(2+il+1,start:end),'b')
-    plot(dynout(start:end), 'y')
-    plot(linout(start:end), 'm')
-    plot(fuzzout(1,(start:end)), 'k')
-%     plot(fuzz(1,(start:end)), 'k')
-%     plot(fuzz(2,(start:end)), 'k')
-    
+    plot(h2(1,start:end),'g--')
+    plot(h2(2,start:end),'r--')
+    plot(h2(2+il+1,start:end),'b--')
+    plot(dynout(start:end), 'g')
+    plot(linout(start:end), 'r')
+    plot(fuzzyout(1,(start:end)), 'b')    
 end
+
+figure (3)
+hold on
+plot(fuzzy(2,:))
+plot(h2(4,:))
+legend('z  obiektu' , 'z kodu')
