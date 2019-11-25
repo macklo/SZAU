@@ -1,5 +1,5 @@
 clear;
-close all;
+% close all;
 clc;
 
 addpath('./abstraction')
@@ -8,23 +8,24 @@ addpath('./..')
 
 workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
 
-tanks = LinearTankSystem(workpoint);
+tanks = TankSystem(workpoint);
 tanks.resetToWorkPoint(workpoint);
 
 umin = 0;
-umax = 1000;
+umax = 300;
 dumax = 200;
 
 D = 1500;
-N = 200;
+N = 400;
 Nu = 150;
-lambda = 0.5;
+lambda = 100;
 psii = 1;
-sim_length = 4000;
-% load("data/setPoints.mat")
-setPoints = build_random_setpoints_array(workpoint, sim_length, 500, 10 , 100);
+sim_length = 10000;
+load("data/setPoints.mat")
+% setPoints = build_random_setpoints_array(workpoint, sim_length, 1000, 20 , 120);
 
 load('./data/s.mat', 's');
+% load('./data/fuzzyS.mat', 'fuzzyS')
 reg = DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
 % reg = Numeric_DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
 
