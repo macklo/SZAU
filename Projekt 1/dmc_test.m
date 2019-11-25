@@ -47,16 +47,23 @@ for k = 1:sim_length
     tanks.nextIteration();
 end
 
-figure;
-	stairs(u, 'r');
-
-figure;
-	stairs(d, 'r');
-
-figure;
-	hold on;
-	stairs(setPoints, 'b');
-	stairs(y, 'r');
-
+figure
+	subplot(3, 1, 1)
+		hold on;
+		plot(setPoints, 'b');
+		plot(y, 'r');
+		ylabel("h_2[cm]")
+		xlabel("t[s]")
+		ylim([0 60])
+	subplot(3, 1, 2)
+		plot(u, 'r');
+		ylabel("F_{1in}[cm^3/s]")
+		xlabel("t[s]")
+		ylim([30 150])
+	subplot(3, 1, 3)
+		plot(d, 'r');
+		ylabel("F_{D}[cm^3/s]")
+		xlabel("t[s]")
+		ylim([15 45])
 
 e = (y - setPoints)*(y - setPoints)' / sim_length;
