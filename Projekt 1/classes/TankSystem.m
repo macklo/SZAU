@@ -14,7 +14,7 @@ classdef TankSystem < AbstractObject
 		y0 = 36
 		
 		u, y, x
-		uk, yk, xk
+		uk, yk, xk, dk
 		
 		x0 = []
 		t = 0
@@ -26,6 +26,7 @@ classdef TankSystem < AbstractObject
 			self@AbstractObject(ny, nu, nd, Ts);
 			
 			self.x0 = workpoint.x;
+			self.dk = self.FD;
 		end
 		
 		function output = getOutput(self)
@@ -34,6 +35,10 @@ classdef TankSystem < AbstractObject
 		
 		function setControl(self, control)
 			self.uk = control;
+		end
+		
+		function setDisturbance(self, control)
+			self.dk = control;
 		end
 			
 		function nextIteration(self)
@@ -49,13 +54,6 @@ classdef TankSystem < AbstractObject
 			self.y(:, 1) = self.yk;
 		end
 		
-% 		function simulate(self)
-% 			lin_x0 = self.yk;
-% 			lin_c0 = self.uk;
-% 			
-% 			x = self.A * lin_x0 + self.B*lin_c0;
-% 			self.yk = self.C * x;
-% 		end
 		
 		function resetToWorkPoint(self, workPoint)
 			self.uk = workPoint.u;
@@ -67,14 +65,6 @@ classdef TankSystem < AbstractObject
 			self.x = (self.xk'.*ones(2, self.tau))';
 		end
 		
-		function u = getU(self)
-			time = size(self.u, 2) * self.Ts;
-			if (time > self.tau)
-				u = self.u(time - self.Ts);
-			else
-				u = self.u0;
-			end
-		end
 		
 		function [y, t] = simulate(self)
 % 			self.u = [self.u, self.uk];
@@ -101,22 +91,13 @@ classdef TankSystem < AbstractObject
 			self.yk = sqrt(x(2)/self.C2);
 		end
 		
-% 		function xret = getX(obj, x)
-% 			xret = x;
-% 			if x(1) < 0
-% 				xret(1) = 0;
-% 			end
-% 			if x(2) < 0
-% 				xret(2) = 0;
-% 			end
-% 		end
 		
 		function [t, x] = simulateODE(self, x0, u0, t0, tfinal)
 			[t, x] = ode45(@(t, x) self.differential(x, u0), t0:self.Ts:tfinal, x0);
 		end
 		
 		function dx = differential(self, x, u)
-			dx1 = u + self.FD - self.alfa1 * sqrt(x(1)/self.A1);
+			dx1 = u + self.dk - self.alfa1 * sqrt(x(1)/self.A1);
 			dx2 = self.alfa1 * sqrt(x(1)/self.A1) - self.alfa2 * (x(2)/self.C2)^(1/4);
 			
 			dx = [dx1, dx2];

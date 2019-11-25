@@ -7,22 +7,26 @@ addpath('./classes')
 addpath('./..')
 
 workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
+workpointD = struct('y', 30);
 
 tanks = TankSystem(workpoint);
 tanks.resetToWorkPoint(workpoint);
 
 umin = 0;
-umax = 300;
-dumax = 200;
+umax = 180;
+dumax = 1;
 
 D = 1500;
-N = 400;
-Nu = 150;
-lambda = 100;
+N = 500;
+Nu = 500;
+lambda = 10;
 psii = 1;
 sim_length = 10000;
-load("data/setPoints.mat")
-% setPoints = build_random_setpoints_array(workpoint, sim_length, 1000, 20 , 120);
+load("data/setPointsY.mat")
+load("data/d.mat")
+setPoints = setPoints(1:sim_length);
+% setPointsY = build_random_setpoints_array(workpoint, sim_length, 1000, 2000, 6 , 66);
+% d = build_random_setpoints_array(workpoint, sim_length, 2000, 2000, 0 , 60);
 
 load('./data/s.mat', 's');
 % load('./data/fuzzyS.mat', 'fuzzyS')
@@ -39,11 +43,15 @@ for k = 1:sim_length
     control = reg.calculate(output, setPoints(:, k));
     u(:, k) = control';
     tanks.setControl(control);
+	tanks.setDisturbance(d(k));
     tanks.nextIteration();
 end
 
 figure;
 	stairs(u, 'r');
+
+figure;
+	stairs(d, 'r');
 
 figure;
 	hold on;
