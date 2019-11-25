@@ -19,9 +19,9 @@ dumax = 1;
 D = 1500;
 N = 500;
 Nu = 500;
-lambda = 10;
+lambda = 100;
 psii = 1;
-sim_length = 10000;
+sim_length = 15500;
 load("data/setPointsY.mat")
 load("data/d.mat")
 setPoints = setPoints(1:sim_length);
