@@ -11,8 +11,8 @@ workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90,
 tanks = TankSystem(workpoint);
 tanks.resetToWorkPoint(workpoint);
 
-umin = 0;
-umax = 180;
+umin = 30;
+umax = 150;
 dumax = 1;
 
 D = 1500;
