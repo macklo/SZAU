@@ -18,7 +18,7 @@ dumax = 1;
 D = 1500;
 N = 500;
 Nu = 500;
-lambda = 15;
+lambda = 50;
 psii = 1;
 sim_length = 15500;
 
@@ -41,10 +41,10 @@ localRegs = cell(numberOfModels, 1);
 mf = createMembershipFunction(numberOfModels);
 
 for  i = 1:numberOfModels
-	localRegs{i} = DMC_Regulator(tanks, workpoint, {fuzzyS{i}}, D, N, Nu, lambda, psii, umin, umax, dumax);
+	localRegs{i} = Local_DMC_Regulator(tanks, workpoint, {fuzzyS{i}}, D, N, Nu, lambda, psii);
 end
 
-fuzzyReg = Fuzzy_Regulator(mf, localRegs);
+fuzzyReg = Fuzzy_Regulator(mf, localRegs, umin, umax, dumax);
 
 u = workpoint.u.*ones(tanks.nu, sim_length);
 y = workpoint.y.*ones(tanks.ny, sim_length);
