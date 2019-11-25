@@ -7,6 +7,6 @@ alfa1 = 26;
 alfa2 = 20;
 FD = 30;
 h1=(alfa2/alfa1)^2*h2;
-workpoint = struct('x', [A1*h1, C2*h2^2], 'u', alfa1*sqrt(h1)-FD, 'y', h2);
+workpoint = struct('x', [A1*h1, C2*h2^2], 'u', alfa1*sqrt(h1)-FD, 'y', h2, 'h1', h1, 'h2', h2);
 end
 

@@ -1,4 +1,4 @@
-classdef LinearTankSystem < AbstractObject
+classdef LinearTankSystem2 < AbstractObject
 	properties
 		A1    = 540;
 		C2    = 0.85;
@@ -30,7 +30,7 @@ classdef LinearTankSystem < AbstractObject
 	end
 	
 	methods
-		function self = LinearTankSystem(workpoint)
+		function self = LinearTankSystem2(workpoint)
 			ny = 1; nu = 1; nd = 0; Ts = 1;
 			self@AbstractObject(ny, nu, nd, Ts);
 			
@@ -62,7 +62,7 @@ classdef LinearTankSystem < AbstractObject
 		end
 		
 		function setControl(self, control)
-			self.uk = control - self.u0;
+			self.uk = control;
 		end
 			
 		function nextIteration(self)
@@ -79,42 +79,48 @@ classdef LinearTankSystem < AbstractObject
 		end
 		
 		function resetToWorkPoint(self, workPoint)
-			self.uk = workPoint.u - workPoint.u;
+			workpoint = self.calculateWorkpoint(workPoint.u);
+			workPoint = workpoint;
+			self.uk = workPoint.u;
 			self.yk = workPoint.y;
-			self.xk = workPoint.x - workPoint.x;
+			self.xk = workPoint.x;
 
 			self.u = self.uk*ones(1, self.tau);
 			self.y = self.yk*ones(1, self.tau);
 			self.x = (self.xk'.*ones(2, self.tau))';
 		end
 		
-		
 		function [y, t] = simulate(self)
-% 			self.u = [self.u, self.uk];
 			x = self.x(end, :);
 			u = self.u(self.tau);
-				
+
 			k1 = self.Ts * self.differential(x, u);
-			k2 = self.Ts * self.differential(x + k1/2, u);
-			k3 = self.Ts * self.differential(x + k2/2, u);
-			k4 = self.Ts * self.differential(x + k3, u);
+% 			k2 = self.Ts * self.differential(x + k1/2, u);
+% 			k3 = self.Ts * self.differential(x + k2/2, u);
+% 			k4 = self.Ts * self.differential(x + k3, u);
 
 			x = x + k1;%(k1 + 2*k2 + 2*k3 + k4)/6;
-			self.yk = x(2) * self.C(1, 2) + self.y0;
+			self.yk = (1/(2*self.C2*(self.x0(2)/self.C2)^(1/2))) * (x(2) - self.x0(2)) + self.y0;
 
 			self.x = [self.x ; x];
 		end
+		
 		
 		function [t, x] = simulateODE(self, x0, u0, t0, tfinal)
 			[t, x] = ode45(@(t, x) self.differential(x, u0), t0:self.Ts:tfinal, x0);
 		end
 		
 		function dx = differential(self, x, u)
-			dx = self.A*x' + self.B*u;
-			dx = dx';
+			dx1 = (u - self.u0) + (self.FD - self.FD0) - self.alfa1/(2*self.A1*(self.x0(1)/self.A1)^(1/2)) * (x(1) - self.x0(1));
+            dx2 = (self.alfa1/(2*self.A1*(self.x0(1)/self.A1)^(1/2))) * (x(1) - self.x0(1)) - (self.alfa2/(4*self.C2*(self.x0(2)/self.C2)^(3/4))) * (x(2) - self.x0(2));
+%             h1(2,t) = (x1(2,t))/A1;
+%             h2(2,t) = h20 + 1/2*(C2*V20)^-0.5 * (x2(2,t) - V20);
+% 			dx = self.A*x' + self.B*u;
+			dx = [dx1 dx2];
 		end
 		
-		function [x, y] = calculateWorkpoint(self, u)
+		function workpoint = calculateWorkpoint(self, u)
+% 			u
 			x1 = (((u - self.u0) + (self.FD - self.FD0)) / (self.alfa1/(2*self.A1*(self.x0(1)/self.A1)^(1/2)))) + self.x0(1);
 			x2 = ((self.alfa1/(2*self.A1*(self.x0(1)/self.A1)^(1/2))) * (x1 - self.x0(1))) / ((self.alfa2/(4*self.C2*(self.x0(2)/self.C2)^(3/4)))) + self.x0(2);
 			y = (1/(2*self.C2*(self.x0(2)/self.C2)^(1/2))) * (x2 - self.x0(2)) + self.y0;

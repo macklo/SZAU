@@ -1,13 +1,14 @@
-close all
+% close all
 clear
 clc
 
 addpath("./classes")
 addpath("./abstraction")
 
-workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
+% workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
+workpoint = calculate_workpoint(36)
 
-sim_length = 4000;
+sim_length = 3000;
 jumpK      = 100;
 
 jumps  = -1:0.2:1;
@@ -21,7 +22,7 @@ ystat    = zeros(size(jumps));
 ystatlin = zeros(size(jumps));
 
 tanks       = TankSystem(workpoint);
-linearTanks = LinearTankSystem(workpoint);
+linearTanks = LinearTankSystem3(workpoint);
 	
 for i = 1:size(uJumps, 2)
 	uJump = uJumps(i)
@@ -67,7 +68,7 @@ figure
 	title ("Przebiegi wyjœcia modeli dla ró¿nych skoków sterowania")
 	xlabel("t [s]")
 	ylabel("h_2 [cm]")
-	legend(legends, 'Location', 'EastOutside')
+% 	legend(legends, 'Location', 'EastOutside')
 
 figure
 	grid on

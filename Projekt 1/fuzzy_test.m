@@ -1,17 +1,18 @@
-close all
+% close all
 clear
 clc
 
 addpath("./classes")
 addpath("./abstraction")
 
-workpoint = struct('x', [1.150295897591316e+04, 1.101600093823581e+03], 'u', 90, 'y', 36);
+workpoint = calculate_workpoint(36);
 
-workpoint1 = struct('x', 1.0e+03 * [1.8405    0.0282], 'u', 90, 'y', 33.43);
+% workpoint1 = struct('x', 1.0e+03 * [1.8405    0.0282], 'u', 90, 'y', 33.43);
+workpoint1 = workpoint
 
 sim_length = 8000;
 jumpK      = 4000;
-numberOfModels = 2
+numberOfModels = 3
 
 jumps  = 1%-1:0.2:1;
 uJumps = workpoint.u + jumps * workpoint.u;

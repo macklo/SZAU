@@ -1,11 +1,4 @@
-
-
-
-
-
-
-
-
+close all
 clear
 addpath("./classes")
 addpath("./abstraction")
@@ -17,7 +10,7 @@ C2 = 0.85;
 alfa1 = 26;
 alfa2 = 20;
 tau = 100;
-start = 1;
+start = 500;
 FD = 30;
 
 ymax = 110.2;
@@ -38,7 +31,7 @@ end
 lintanks = cell(il ,1);
 for i= 1:il
     workpoints(i) = calculate_workpoint(h2r0(i));
-     lintanks{i} = LinearTankSystem(workpoints(i));
+     lintanks{i} = LinearTankSystem3(workpoints(i));
      lintanks{i}.resetToWorkPoint(workpoints(i));
     
     
@@ -84,7 +77,7 @@ workpoint = calculate_workpoint(36);
 tank       =TankSystem(workpoint);
 tank.resetToWorkPoint(workpoint);
 
-lintank  = LinearTankSystem(workpoint);
+lintank  = LinearTankSystem3(workpoint);
 lintank.resetToWorkPoint(workpoint);
 u11 = workpoint.u*ones(1,n);
 

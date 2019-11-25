@@ -48,9 +48,9 @@ classdef FuzzyTankSystem < AbstractObject
 			self.linearModels = cell(numberOfModels, 1);
 			for i = 1:numberOfModels
 				self.linearWorkpoints{i} = self.calculateWorkpoint(h2r0(i));
-				self.linearModels{i} = LinearTankSystem(self.linearWorkpoints{i});
+				self.linearModels{i} = LinearTankSystem3(self.linearWorkpoints{i});
 				self.linearModels{i}.calculateWorkpoint(self.linearWorkpoints{i}.u);
-% 				self.linearModels{i}.moveToPoint(workpoint.u, workpoint.y);
+				self.linearModels{i}.resetToWorkPoint(workpoint);
 			end
 			self.c = c;
 			
@@ -117,7 +117,7 @@ classdef FuzzyTankSystem < AbstractObject
 			self.y = self.yk*ones(1, self.tau);
 			self.x = (self.xk'.*ones(2, self.tau))';
 			for r = 1:self.numberOfModels
-				self.linearModels{r}.resetToWorkPoint(self.linearWorkpoints{r});
+				self.linearModels{r}.resetToWorkPoint(workPoint);
 			end
 		end
 		
@@ -195,7 +195,7 @@ classdef FuzzyTankSystem < AbstractObject
 		
 		function workpoint = calculateWorkpoint(self, h2)
 			h1 = (self.alfa2 / self.alfa1)^2 * h2;
-			workpoint = struct('x', [self.A1 * h1, self.C2 * h2^2], 'u', self.alfa1 * sqrt(h1) - self.FD, 'y', h2);
+			workpoint = struct('x', [self.A1 * h1, self.C2 * h2^2], 'u', self.alfa1 * sqrt(h1) - self.FD, 'y', h2, 'h1', h1, 'h2', h2);
 		end
 	end
 end
