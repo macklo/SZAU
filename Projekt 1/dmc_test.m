@@ -59,4 +59,4 @@ figure;
 	stairs(y, 'r');
 
 
-e = (y - setPoints)*(y - setPoints)';
+e = (y - setPoints)*(y - setPoints)' / sim_length;

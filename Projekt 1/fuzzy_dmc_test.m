@@ -12,15 +12,15 @@ tanks = TankSystem(workpoint);
 tanks.resetToWorkPoint(workpoint);
 
 umin = 0;
-umax = 300;
-dumax = 200;
+umax = 180;
+dumax = 1;
 
-D = 3700;
-N = 400;
-Nu = 150;
-lambda = 100;
+D = 1500;
+N = 500;
+Nu = 500;
+lambda = 15;
 psii = 1;
-sim_length = 10000;
+sim_length = 15500;
 
 numberOfModels = 5;
 ymin = 0;
@@ -28,7 +28,8 @@ ymax = 120;
 dy = (ymax - ymin)/numberOfModels;
 linPoints = dy/2:dy:ymax-dy/2;
 
-load("data/setPoints.mat")
+load("data/setPointsY.mat")
+load("data/d.mat")
 setPoints = setPoints(1:sim_length);
 % setPoints = build_random_setpoints_array(workpoint, sim_length, 1000, 20 , 120);
 
@@ -57,11 +58,15 @@ for k = 1:sim_length
     [control, localControl(:, k), weights(:, k)] = fuzzyReg.calculate(output, setPoints(:, k));
     u(:, k) = control';
     tanks.setControl(control);
+	tanks.setDisturbance(d(k));
     tanks.nextIteration();
 end
 
 figure;
 	stairs(u, 'r');
+
+figure;
+	stairs(d, 'r');
 
 figure;
 	hold on;
@@ -81,4 +86,4 @@ figure
 	end
 
 
-e = (y - setPoints)*(y - setPoints)';
+e = (y - setPoints)*(y - setPoints)' / sim_length;
