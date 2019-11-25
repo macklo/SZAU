@@ -2,8 +2,8 @@ function s = createFuzzyS(linPoints)
 	numberOfModels = length(linPoints);
 	s = cell(numberOfModels, 1); 
 
-	sim_length = 8000;
-	start = 10;
+	sim_length = 8500;
+	start = 500;
 
 	for i = 1:numberOfModels
 		workpoint = calculate_workpoint(linPoints(i));
@@ -26,10 +26,10 @@ function s = createFuzzyS(linPoints)
 		end
 	end
 
-	figure
-		hold on
-		for i = 1:numberOfModels
-			stairs(s{i})
-		end
+% 	figure
+% 		hold on
+% 		for i = 1:numberOfModels
+% 			stairs(s{i})
+% 		end
 end
 
