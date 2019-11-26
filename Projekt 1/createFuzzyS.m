@@ -26,10 +26,10 @@ function s = createFuzzyS(linPoints)
 		end
 	end
 
-% 	figure
-% 		hold on
-% 		for i = 1:numberOfModels
-% 			stairs(s{i})
-% 		end
+	figure
+		hold on
+		for i = 1:numberOfModels
+			stairs(s{i})
+		end
 end
 

@@ -15,7 +15,7 @@ umin = 30;
 umax = 150;
 dumax = 1;
 
-D = 1500;
+D = 2200;
 N = 500;
 Nu = 500;
 lambda = 50;
@@ -25,7 +25,7 @@ sim_length = 15500;
 numberOfModels = 5;
 ymin = 16;
 ymax = 66;
-a = 2;
+a = 3;
 
 load("data/setPointsY.mat")
 load("data/d.mat")
@@ -35,7 +35,8 @@ setPoints = setPoints(1:sim_length);
 % load('./data/s.mat', 's');
 % reg = DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
 
-[mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, a);
+% [mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, a);
+[mf, linPoints] = createMembershipFunctionFromCuts([25, 38, 45, 60], ymin, ymax, a);
 fuzzyS = createFuzzyS(linPoints);
 localRegs = cell(numberOfModels, 1);
 

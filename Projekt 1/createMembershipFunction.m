@@ -10,5 +10,13 @@ function [mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, 
 		mf(i, 1) = fismf("dsigmf", [a cuts(i-1) a cuts(i)]);
 	end
 	linPoints = ymin+dy/2:dy:ymax-dy/2;
+	
+	y = evalmf(mf, ymin:0.1:ymax);
+
+	figure
+		hold on
+		for i = 1:numberOfModels
+			plot(ymin:0.1:ymax, y(i, :))
+		end
 end
 
