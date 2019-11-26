@@ -16,8 +16,8 @@ umax = 150;
 dumax = 1;
 
 D = 2200;
-N = 500;
-Nu = 500;
+N = 250;
+Nu = 250;
 lambda = 50;
 psii = 1;
 sim_length = 15500;
@@ -55,7 +55,7 @@ for k = 1:sim_length
     output = tanks.getOutput();
     y(:, k) = output;
     [control, weights(:, k)] = fuzzyReg.calculate(output, setPoints(:, k));
-    u(:, k) = control';
+	u(:, k) = control';
     tanks.setControl(control);
 	tanks.setDisturbance(d(k));
     tanks.nextIteration();

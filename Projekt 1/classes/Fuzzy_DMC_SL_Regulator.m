@@ -5,7 +5,6 @@ classdef Fuzzy_DMC_SL_Regulator < AbstractRegulator
 		fuzzyS, D, N, Nu, lambda, psii,
 		fuzzyM, Mp, K1
 		delta_Up, Ek, Uk
-		A, B
 	end
 	
 	methods
@@ -31,9 +30,6 @@ classdef Fuzzy_DMC_SL_Regulator < AbstractRegulator
 			self.Ek = zeros(N * self.ny,1);
 			
 			self.Uk = 90;
-			
-			self.A = [tril(ones(self.Nu));tril(ones(self.Nu))*-1];
-			self.B = zeros(2*self.Nu,1);
 		end
 		
 		function [control, weights] = calculate(self, output, setPoint)
@@ -54,7 +50,7 @@ classdef Fuzzy_DMC_SL_Regulator < AbstractRegulator
 			for i = 1 : self.N
 				for j = 1 : self.Nu
 					if (i >= j)
-						M(i,j) = Fuzzy_DMC_SL_Regulator.DMC_get_Si(S, i-j+1);
+						M(i,j) = s(i-j+1);
 					else
 						M(i,j) = 0;
 					end
@@ -64,7 +60,7 @@ classdef Fuzzy_DMC_SL_Regulator < AbstractRegulator
 			self.Mp = zeros(self.N, self.D - 1);
 			for i = 1:self.N
 				for j = 1 : self.D - 1
-					self.Mp(i, j) = Fuzzy_DMC_SL_Regulator.DMC_get_Si(S, i+j) - Fuzzy_DMC_SL_Regulator.DMC_get_Si(S, j);    
+					self.Mp(i, j) = s(i+j) - s(j);    
 				end
 			end 
 			
@@ -72,7 +68,8 @@ classdef Fuzzy_DMC_SL_Regulator < AbstractRegulator
 			y0 = output + self.Mp * self.delta_Up;
 
 			yzad = ones(self.Nu, 1) * setPoint;
-			duk = fmincon(@(duk)(yzad - y0 - M * duk)' * (yzad - y0 - M * duk) + self.lambda * duk' * duk, ones(self.Nu, 1) * self.delta_Up(1), self.A, self.B,[],[], ones(self.Nu,1)*(-1), ones(self.Nu,1)*(1));
+			options = optimoptions(@fmincon,'MaxFunctionEvaluations', 1500, 'Display', 'off');
+			duk = fmincon(@(duk)(yzad - y0 - M * duk)' * (yzad - y0 - M * duk) + self.lambda * duk' * duk, ones(self.Nu, 1) * self.delta_Up(1), [], [],[],[], ones(self.Nu,1)*(-45), ones(self.Nu,1)*(45), [], options);
 			
 			delta_Uk = duk(1);
 			
