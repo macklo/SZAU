@@ -1,7 +1,4 @@
-clear
-close all
-clc
-
+function e = fuzzy_dmcSL_test()
 addpath('./abstraction')
 addpath('./classes')
 addpath('./..')
@@ -30,24 +27,15 @@ a = 2.5;
 load("data/setPointsY.mat")
 load("data/d.mat")
 setPoints = setPoints(1:sim_length);
-% setPoints = build_random_setpoints_array(workpoint, sim_length, 1000, 20 , 120);
 
-% load('./data/s.mat', 's');
-% reg = DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
+[mf, linPoints] = createMembershipFunctionFromCuts([25, 38, 45, 60], ymin, ymax, a);
 
-option = 1;
-if ~option
-	[mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, a);
-else
-	[mf, linPoints] = createMembershipFunctionFromCuts([25, 38, 45, 60], ymin, ymax, a);
-end
 fuzzyS = createFuzzyS(linPoints);
 
 fuzzyReg = Fuzzy_DMC_SL_Regulator(mf, fuzzyS, D, N, Nu, lambda, psii,  umin, umax, dumax);
 
 u = workpoint.u.*ones(tanks.nu, sim_length);
 y = workpoint.y.*ones(tanks.ny, sim_length);
-localControl = zeros(numberOfModels, sim_length);
 weights = zeros(numberOfModels, sim_length);
 
 for k = 1:sim_length
@@ -79,12 +67,6 @@ figure
 		ylabel("F_{D}[cm^3/s]")
 		xlabel("t[s]")
 		ylim([15 45])
-saveas(gcf, "./fig/fuzzydmcSL" + num2str(lambda) + "_" + num2str(option) + ".emf")
-figure
-	hold on
-	for i = 1:numberOfModels
-		plot(localControl(i, :));
-	end
 	
 figure
 	hold on
@@ -94,3 +76,4 @@ figure
 
 
 e = (y - setPoints)*(y - setPoints)' / sim_length;
+end

@@ -1,6 +1,4 @@
-clear
-% close all
-clc
+function e = fuzzy_dmc_test(option)
 
 addpath('./abstraction')
 addpath('./classes')
@@ -30,12 +28,7 @@ a = 2.5;
 load("data/setPointsY.mat")
 load("data/d.mat")
 setPoints = setPoints(1:sim_length);
-% setPoints = build_random_setpoints_array(workpoint, sim_length, 1000, 20 , 120);
 
-% load('./data/s.mat', 's');
-% reg = DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
-
-option = 1;
 if ~option
 	[mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, a);
 else
@@ -84,7 +77,7 @@ figure
 		ylabel("F_{D}[cm^3/s]")
 		xlabel("t[s]")
 		ylim([15 45])
-saveas(gcf, "./fig/fuzzydmc" + num2str(lambda) + "_" + num2str(option) + ".emf")
+
 figure
 	hold on
 	for i = 1:numberOfModels
@@ -99,3 +92,4 @@ figure
 
 
 e = (y - setPoints)*(y - setPoints)' / sim_length;
+end

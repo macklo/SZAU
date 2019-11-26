@@ -1,6 +1,4 @@
-close all
-clear
-clc
+function fuzzy_test(numberOfModels)
 
 addpath("./classes")
 addpath("./abstraction")
@@ -12,7 +10,7 @@ workpoint1 = workpoint;
 
 sim_length = 2000;
 jumpK      = 100;
-numberOfModels = 5;
+% numberOfModels = 5;
 
 jumps  = -0.5:0.125:0.5;
 uJumps = workpoint.u + jumps * workpoint.u;
@@ -91,31 +89,4 @@ figure
 	xlabel("t [s]")
 	ylabel("h_2 [cm]")
 
-figure(1)
-saveas(gcf, "./fig/bmf" + num2str(numberOfModels) + ".emf")
-
-figure(2)
-saveas(gcf, "./fig/2_1_" + num2str(numberOfModels) + ".emf")
-% figure
-% 	grid on
-% 	hold on
-% 	plot(uJumps, ystat, 'o');
-% 	plot(uJumps, ystatlin, 'o');
-% 	xlabel("F_{1in} [cm^3/s]");
-% 	ylabel("h_2 [cm]");
-% 	title("Charakterystyka statyczna");
-% 	legend("Model nieliniowy", "Model liniowy")
-
-% figure
-% 	grid on
-% 	hold on
-% 	for i = 1:numberOfModels
-% 		plot(fuzzyTanksOutputs{1}(i, :), 'b');
-% 	end
-% 	
-% figure
-% 	grid on
-% 	hold on
-% 	for i = 1:numberOfModels
-% 		stairs(fuzzyTanksWeights{1}(i, :), 'g');
-% 	end
+end

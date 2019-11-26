@@ -1,7 +1,4 @@
-clear;
-% close all;
-clc;
-
+function e = dmc_test(lambda)
 addpath('./abstraction')
 addpath('./classes')
 addpath('./..')
@@ -18,19 +15,16 @@ dumax = 1;
 D = 1500;
 N = 500;
 Nu = 500;
-lambda = 100;
+
 psii = 1;
 sim_length = 15500;
 load("data/setPointsY.mat")
 load("data/d.mat")
 setPoints = setPoints(1:sim_length);
-% setPointsY = build_random_setpoints_array(workpoint, sim_length, 1000, 2000, 6 , 66);
-% d = build_random_setpoints_array(workpoint, sim_length, 2000, 2000, 0 , 60);
 
 load('./data/s.mat', 's');
-% load('./data/fuzzyS.mat', 'fuzzyS')
+
 reg = DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
-% reg = Numeric_DMC_Regulator(tanks, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
 
 u = workpoint.u.*ones(tanks.nu, sim_length);
 y = workpoint.y.*ones(tanks.ny, sim_length);
@@ -66,3 +60,4 @@ figure
 		ylim([15 45])
 
 e = (y - setPoints)*(y - setPoints)' / sim_length;
+end
