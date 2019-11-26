@@ -16,8 +16,8 @@ classdef FuzzyTankSystem < AbstractObject
 		u, y, x
 		uk, yk, xk
 		
-		ymin = 2.25;
-		ymax = 110.2;
+		ymin = 16;
+		ymax = 66;
 		
 		x0 = []
 		t = 0
@@ -36,7 +36,7 @@ classdef FuzzyTankSystem < AbstractObject
 			self.numberOfModels = numberOfModels;
 			self.linearWorkpoints = cell(3, 1);
 			dy = (self.ymax - self.ymin) / numberOfModels;
-			a = 0.5;
+			a = 2.5;
 			c = self.ymin+dy:dy:self.ymax-dy;
 			h2r0 = ones(1, numberOfModels);
 			h2r0(1) = (c(1)+self.ymin)/2-1;
@@ -54,7 +54,7 @@ classdef FuzzyTankSystem < AbstractObject
 			end
 			self.c = c;
 			
-			figure
+			figure(1)
 			hold on
 			for r = 1:numberOfModels
 				if r == 1
@@ -66,9 +66,8 @@ classdef FuzzyTankSystem < AbstractObject
 				end
 			end
 			plot(h2r0, ones(1,numberOfModels), 'ko')
-			xlabel('h2')
-			ylabel('przynale?no??')
-			title('Funkcje przynale?no?ci regulator?w lokalnych w regulacji rozmytej wzgl?dem warto?ci wyj?cia')
+			xlabel('h_2')
+			ylabel('przynale¿noœæ')
 			
 		end
 		
