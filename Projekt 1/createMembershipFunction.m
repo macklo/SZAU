@@ -19,5 +19,7 @@ function [mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, 
             plot(ymin:0.1:ymax, y(i, :))
         end
     plot(linPoints, ones(1,numberOfModels), 'ko')
+    xlabel("h2 [cm]")
+    ylabel("przynale¿noœæ")
 end
 
