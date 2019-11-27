@@ -15,8 +15,9 @@ function [mf, linPoints] = createMembershipFunction(numberOfModels, ymin, ymax, 
 
 	figure
 		hold on
-		for i = 1:numberOfModels
-			plot(ymin:0.1:ymax, y(i, :))
-		end
+        for i = 1:numberOfModels
+            plot(ymin:0.1:ymax, y(i, :))
+        end
+    plot(linPoints, ones(1,numberOfModels), 'ko')
 end
 
