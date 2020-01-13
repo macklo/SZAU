@@ -24,13 +24,22 @@ figure
 		stairs(1:sim_length, y)
 		stairs(1:sim_length, y_m)
 		title("Przebiegi dla zbioru ucz¹cego")
+		xlabel("k")
+		ylabel("y")
+		legend("Dane", "Model")
 	subplot(2, 1, 2)
 		hold on
 		stairs(1:sim_length, u)
+		xlabel("k")
+		ylabel("u")
+print(gcf,'./fig/2_8_przebieg_ucz', '-dmeta')
 
 figure
 	scatter(y, y_m, '.');
 	title("Relacja dla zbioru ucz¹cego")
+	xlabel("Dane")
+	ylabel("Model")
+print(gcf,'./fig/2_8_relacja_ucz', '-dmeta')
 
 
 load("./data/dane_wer.mat")
@@ -47,11 +56,21 @@ figure
 		stairs(1:sim_length, y)
 		stairs(1:sim_length, y_m)
 		title("Przebiegi dla zbioru weryfikuj¹cego")
+		xlabel("k")
+		ylabel("y")
+		legend("Dane", "Model")
 	subplot(2, 1, 2)
 		hold on
 		stairs(1:sim_length, u)
+		xlabel("k")
+		ylabel("u")
+		
+print(gcf,'./fig/2_8_przebieg_wer', '-dmeta')
 
 figure
 	scatter(y, y_m, '.');
 	title("Relacja dla zbioru weryfikuj¹cego")
+	xlabel("Dane")
+	ylabel("Model")
+print(gcf,'./fig/2_8_relacja_wer', '-dmeta')
 	

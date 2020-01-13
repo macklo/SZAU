@@ -14,7 +14,7 @@ u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpI
 y = zeros(1, sim_length);
 x1 = zeros(1, sim_length);
 x2 = zeros(1, sim_length);
-noise = 0.03;
+noise = 0.00;
 
 for k = (tau+1):sim_length
 	g1 = (exp(6*u(k-4)) - 1)/(exp(6*u(k-4)) + 1);

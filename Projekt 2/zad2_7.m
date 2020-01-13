@@ -26,13 +26,20 @@ figure
 		stairs(1:sim_length, y)
 		stairs(1:sim_length, y_nn)
 		title("Przebiegi dla zbioru ucz¹cego")
+		xlabel("k")
+		ylabel("y")
+		legend("Dane", "Model")
 	subplot(2, 1, 2)
 		hold on
 		stairs(1:sim_length, u)
+		xlabel("k")
+		ylabel("u")
 
 figure
 	scatter(y, y_nn, '.');
 	title("Relacja dla zbioru ucz¹cego")
+	xlabel("Dane")
+	ylabel("Model")
 
 
 load("./data/dane_wer.mat")
@@ -49,10 +56,17 @@ figure
 		stairs(1:sim_length, y)
 		stairs(1:sim_length, y_nn)
 		title("Przebiegi dla zbioru weryfikuj¹cego")
+		xlabel("k")
+		ylabel("y")
+		legend("Dane", "Model")
 	subplot(2, 1, 2)
 		hold on
 		stairs(1:sim_length, u)
+		xlabel("k")
+		ylabel("u")
 
 figure
 	scatter(y, y_nn, '.');
 	title("Relacja dla zbioru weryfikuj¹cego")
+	xlabel("Dane")
+	ylabel("Model")
