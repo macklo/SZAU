@@ -10,7 +10,7 @@ beta2 = 0.021057;
 sim_length = 4000;
 tau = 4;
 jumpInterval = 100;
-u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpInterval, -1, 1);;
+u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpInterval, -1, 1);
 y = zeros(1, sim_length);
 x1 = zeros(1, sim_length);
 x2 = zeros(1, sim_length);
@@ -33,4 +33,3 @@ figure
 		xlabel("k")
 		ylabel("u")
 		title("u")
-		
