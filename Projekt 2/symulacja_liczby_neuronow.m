@@ -31,4 +31,4 @@ for numberOfNeurons = 1:10
 	end
 end
 
-save("data/liczba_neuronow_wyniki.mat", "E_ucz", "E_wer", "w10", "w20", "w1", "w2");
+% save("data/liczba_neuronow_wyniki.mat", "E_ucz", "E_wer", "w10c", "w20c", "w1c", "w2c");
