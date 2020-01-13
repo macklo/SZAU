@@ -14,12 +14,13 @@ u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpI
 y = zeros(1, sim_length);
 x1 = zeros(1, sim_length);
 x2 = zeros(1, sim_length);
+noise = 0.03;
 
 for k = (tau+1):sim_length
 	g1 = (exp(6*u(k-4)) - 1)/(exp(6*u(k-4)) + 1);
 	x1(k) = -alfa1*x1(k-1) + x2(k-1) + beta1*g1;
 	x2(k) = -alfa2*x1(k-1) + beta2*g1;
-	y(k) = -0.5*(1-exp(-2*x1(k)));
+	y(k) = -0.5*(1-exp(-2*x1(k))) - noise + 2*noise*rand;
 end
 
 figure

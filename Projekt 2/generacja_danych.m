@@ -6,6 +6,7 @@ alfa1 = -1.473409;
 alfa2 = 0.525788;
 beta1 = 0.026085;
 beta2 = 0.021057;
+noise = 0.03;
 		
 %% Dane ucz¹ce
 sim_length = 2000;
@@ -20,7 +21,7 @@ for k = (tau+1):sim_length
 	g1 = (exp(6*u(k-4)) - 1)/(exp(6*u(k-4)) + 1);
 	x1(k) = -alfa1*x1(k-1) + x2(k-1) + beta1*g1;
 	x2(k) = -alfa2*x1(k-1) + beta2*g1;
-	y(k) = -0.5*(1-exp(-2*x1(k)));
+	y(k) = -0.5*(1-exp(-2*x1(k))) - noise + 2*noise*rand;
 end
 
 figure
@@ -34,7 +35,7 @@ figure
 		xlabel("k")
 		ylabel("u")
 writematrix([u' y'], './dane.txt', 'Delimiter', 'space')
-save("data/dane_ucz.mat", "u", "y");
+% save("data/dane_ucz.mat", "u", "y");
 
 %% Dane weryfikuj¹ce
 sim_length = 2000;
@@ -49,7 +50,7 @@ for k = (tau+1):sim_length
 	g1 = (exp(6*u(k-4)) - 1)/(exp(6*u(k-4)) + 1);
 	x1(k) = -alfa1*x1(k-1) + x2(k-1) + beta1*g1;
 	x2(k) = -alfa2*x1(k-1) + beta2*g1;
-	y(k) = -0.5*(1-exp(-2*x1(k)));
+	y(k) = -0.5*(1-exp(-2*x1(k))) - noise + 2*noise*rand;
 end
 
 figure
@@ -62,5 +63,5 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
-writematrix([u' y'], './dane_wer.txt', 'Delimiter', 'space')
+% writematrix([u' y'], './dane_wer.txt', 'Delimiter', 'space')
 save("data/dane_wer.mat", "u", "y");
