@@ -33,7 +33,8 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
-writematrix([u' y'], './sieci/dane.txt', 'Delimiter', 'space')
+writematrix([u' y'], './dane.txt', 'Delimiter', 'space')
+save("data/dane_ucz.mat", "u", "y");
 
 %% Dane weryfikuj¹ce
 sim_length = 2000;
@@ -62,3 +63,4 @@ figure
 		xlabel("k")
 		ylabel("u")
 writematrix([u' y'], './dane_wer.txt', 'Delimiter', 'space')
+save("data/dane_wer.mat", "u", "y");
