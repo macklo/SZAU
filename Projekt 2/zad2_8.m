@@ -9,6 +9,7 @@ load("data\dane_ucz.mat")
 Y = y(tau+2:end)';
 M = [u(2:end-tau)' u(1:end-tau-1)' y(tau+1:end-1)' y(tau:end-2)'];
 w = M\Y;
+save("data/lin.mat", "w");
 
 sim_length= size(u, 2);
 y_m = zeros(size(u));
