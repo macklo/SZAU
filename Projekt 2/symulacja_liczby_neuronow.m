@@ -18,6 +18,8 @@ for numberOfNeurons = 1:10
 		numberOfNeurons
 		iteration
 		system('sieci.exe');
+		system("copy uczenie.m sieci_output\uczenie_" + num2str(numberOfNeurons) + "_" + num2str(iteration) + ".m");
+		system("copy model.m sieci_output\model_" + num2str(numberOfNeurons) + "_" + num2str(iteration) + ".m");
 		
 		model
 		w10c{numberOfNeurons, iteration} = w10;
