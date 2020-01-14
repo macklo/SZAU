@@ -35,7 +35,20 @@ nb = 5;
 b = [0 0 0 w(1) w(2)];
 a = [-w(3) -w(4)];
 
-load("./data/s.mat")
+s = zeros(1, N);
+for j = 1:N
+	sum1 = 0;
+	sum2 = 0;
+	for i = 1:min([j, size(b, 2)])
+		sum1 = sum1+b(i);
+	end
+	for i = 1:min([j-1, size(a, 2)])
+		sum2 = sum2+a(i)*s(j-i);
+	end
+	s(j) = sum1 - sum2;
+end
+figure
+stairs(s)
 
 M = zeros(N, Nu);
 for i = 1:N
