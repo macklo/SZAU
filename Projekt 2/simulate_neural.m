@@ -6,22 +6,12 @@ tau = 4;
 
 load("./data/liczba_neuronow_wyniki.mat")
 
-best_ucz = min(E_ucz, [], 2);
-best_wer = min(E_wer, [], 2);
-% [valI, i] = min(E_wer);
-% [valJ, j] = min(min(E_wer));
-% 
-% i =i(j);
-% i = 10;
-% j = 2;
+best_ucz = round(min(E_ucz, [], 2), 4);
+best_wer = round(min(E_wer, [], 2), 4);
 
 i = 7;
 j = 3;
 
-% w1  = w1c{i, j};
-% w2  = w2c{i, j};
-% w10 = w10c{i, j};
-% w20 = w20c{i, j};
 run("sieci_output/model_7_3.m")
 
 load("./data/dane_ucz.mat")
@@ -46,12 +36,16 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
+		
+print(gcf,'./fig/2_4_przebieg_ucz', '-dmeta')
 
 figure
 	scatter(y, y_nn, '.');
 	title("Relacja dla zbioru ucz¹cego")
 	xlabel("Dane")
 	ylabel("Model")
+	
+print(gcf,'./fig/2_4_relacja_ucz', '-dmeta')
 
 
 load("./data/dane_wer.mat")
@@ -76,9 +70,13 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
+print(gcf,'./fig/2_4_przebieg_wer', '-dmeta')
+
 figure
 	scatter(y, y_nn, '.');
 	title("Relacja dla zbioru weryfikuj¹cego")
 	xlabel("Dane")
+	
+print(gcf,'./fig/2_4_relacja_wer', '-dmeta')
 	ylabel("Model")
 	

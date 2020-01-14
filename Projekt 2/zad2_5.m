@@ -2,7 +2,8 @@ close all
 clear
 clc
 
-parameters = [4 5 2 1 100 0.00001 1 2];
+numberOfNeurons = 7;
+parameters = [4 5 2 numberOfNeurons 100 0.00001 1 2];
 
 w10c = cell(10, 1);
 w20c = cell(10, 1);
@@ -11,7 +12,6 @@ w2c = cell(10, 1);
 E_ucz = zeros(10, 1);
 E_wer = zeros(10, 1);
 
-numberOfNeurons = 6;
 numberOfIterations = 10;
 writematrix(parameters, 'ustawienia.txt', 'Delimiter', 'space')
 
