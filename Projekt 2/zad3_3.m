@@ -28,12 +28,18 @@ load("data/lin.mat")
 
 N = 20;
 Nu = 20;
-lambda = 10;
+lambda = 250;
 
 na = 2;
 nb = 5;
 b = [0 0 0 w(1) w(2)];
 a = [-w(3) -w(4)];
+
+
+b4=b(4);
+b5=b(5);
+a1=a(1);
+a2=a(2);
 
 s = zeros(1, N);
 for j = 1:N
@@ -69,7 +75,7 @@ for k = tau+2:sim_length
 	x2(k) = -alfa2*x1(k-1) + beta2*g1;
 	y(k) = -0.5*(1-exp(-2*x1(k)));
 	
-	q = [u(k-tau) u(k-tau-1) y_m(k-1) y_m(k-2)];
+	q = [u(k-tau) u(k-tau-1) y(k-1) y(k-2)];
 	y_m(k) = q*w;
 	dk = y(k) - y_m(k);
 	

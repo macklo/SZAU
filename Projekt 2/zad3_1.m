@@ -4,7 +4,7 @@ clc
 
 N = 20;
 Nu = 20;
-lambda = 3;
+lambda = 50;
 
 
 delta=1e-5;
@@ -42,13 +42,14 @@ for k = tau+2:sim_length
       
   y_mlin(k) = b4(k)*u(k-4) +b5(k)*u(k-5) -a1(k)*y_o(k-1)-a2(k)*y_o(k-2);
   y_nn(k) = nn(u(k-4), u(k-5), y_o(k-1), y_o(k-2));
+  
   %3. Oblicz odp. skokow¹
   sc=zeros(1, N);
   sc(4)=b4(k);
   for i= 5:N
-      sc(N)=b4(k)+b5(k)-(a1(k)*sc(N-1)+a2(k)*sc(N-2));
+      sc(i)=b4(k)+b5(k)-(a1(k)*sc(i-1)+a2(k)*sc(i-2));
   end
-  
+    
   %4. Oblicz macierz dynamiczna
   M = zeros(N, Nu);
   for i = 1:N
@@ -97,7 +98,6 @@ figure
 		hold on
 		stairs(1:sim_length, y_o)
 		stairs(1:sim_length, y_zad)
-		stairs(1:sim_length, y_nn)
 		title("Przebieg")
 		
 	subplot(2, 1, 2)
