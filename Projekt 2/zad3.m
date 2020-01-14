@@ -4,7 +4,7 @@ clc
 
 N = 20;
 Nu = 20;
-lambda = 20;
+lambda = 200;
 
 delta=1e-5;
 tau=4;
@@ -143,9 +143,11 @@ figure
 		title("Wartoœæ wyjœciowa")
 		ylabel("y")
 		xlabel("k")
+        legend("Wyjœcie obiektu","Wartoœæ zadana")
 		
 	subplot(2, 1, 2)
 		stairs(1:sim_length, u)
 		title("Sterowanie")
 		ylabel("u")
 		xlabel("k")
+print(gcf,"./fig/zad3NPL" + " N= " + num2str(N) + " Nu= " + num2str(Nu) + " lambda= " + num2str(lambda) , '-dmeta')
