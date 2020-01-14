@@ -15,7 +15,6 @@ best_wer = min(E_wer, [], 2);
 
 run("sieci_output/model_6_4.m")
 sim_length = 2000;
-noise = 0.03;
 
 y_zad = build_random_setpoints_array(struct("y", 0), sim_length, 50, 50, -0.4, 2.4);
 
@@ -28,8 +27,8 @@ x2 = zeros(1, sim_length);
 load("data/lin.mat")
 
 N = 200;
-Nu = 200;
-lambda = 100000;
+Nu = 150;
+lambda = 1;
 
 na = 2;
 nb = 5;
@@ -49,13 +48,13 @@ for i = 1:N
 	end
 end
 
-K = ((M'*M + lambda*eye(Nu, Nu))^(-1))*M';
+K =(M'*M + lambda*eye(Nu, Nu))\M';
 
 for k = tau+2:sim_length
 	g1 = (exp(6*u(k-4)) - 1)/(exp(6*u(k-4)) + 1);
 	x1(k) = -alfa1*x1(k-1) + x2(k-1) + beta1*g1;
 	x2(k) = -alfa2*x1(k-1) + beta2*g1;
-	y(k) = -0.5*(1-exp(-2*x1(k))) - noise + 2*noise*rand;
+	y(k) = -0.5*(1-exp(-2*x1(k)));
 	
 	q = [u(k-tau) u(k-tau-1) y_m(k-1) y_m(k-2)];
 	y_m(k) = q*w;
