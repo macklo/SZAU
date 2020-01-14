@@ -6,13 +6,17 @@ alfa1 = -1.473409;
 alfa2 = 0.525788;
 beta1 = 0.026085;
 beta2 = 0.021057;
-noise = 0.03;
+noise = 0.01;
 		
 %% Dane ucz¹ce
-sim_length = 2000;
+
 tau = 4;
 jumpInterval = 100;
-u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpInterval, -1, 1);
+u_rand = build_random_setpoints_array(struct("y", 0), 2000, jumpInterval, jumpInterval, -1, 1);
+u = generate_u(0, jumpInterval, [0.2 0.4 -0.2 -1 1 0.8 0.7  -1 0]);
+u = [u u_rand];
+sim_length = size(u, 2);
+stairs(u)
 y = zeros(1, sim_length);
 x1 = zeros(1, sim_length);
 x2 = zeros(1, sim_length);
@@ -34,14 +38,16 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
-writematrix([u' y'], './dane.txt', 'Delimiter', 'space')
+% writematrix([u' y'], './dane.txt', 'Delimiter', 'space')
 % save("data/dane_ucz.mat", "u", "y");
 
 %% Dane weryfikuj¹ce
-sim_length = 2000;
+sim_length = 3000;
 tau = 4;
 jumpInterval = 100;
-u = build_random_setpoints_array(struct("y", 0), sim_length, jumpInterval, jumpInterval, -1, 1);
+u_rand = build_random_setpoints_array(struct("y", 0), 2000, jumpInterval, jumpInterval, -1, 1);
+u = generate_u(0, jumpInterval, [0.8 -0.2 -1 0.5 1 0.8 -1  0.6 0]);
+u = [u u_rand];
 y = zeros(1, sim_length);
 x1 = zeros(1, sim_length);
 x2 = zeros(1, sim_length);
@@ -64,4 +70,4 @@ figure
 		xlabel("k")
 		ylabel("u")
 % writematrix([u' y'], './dane_wer.txt', 'Delimiter', 'space')
-save("data/dane_wer.mat", "u", "y");
+% save("data/dane_wer.mat", "u", "y");

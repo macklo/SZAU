@@ -15,14 +15,14 @@ best_wer = min(E_wer, [], 2);
 % i = 10;
 % j = 2;
 
-i = 6;
-j = 4;
+i = 7;
+j = 3;
 
 % w1  = w1c{i, j};
 % w2  = w2c{i, j};
 % w10 = w10c{i, j};
 % w20 = w20c{i, j};
-run("sieci_output/model_6_4.m")
+run("sieci_output/model_7_3.m")
 
 load("./data/dane_ucz.mat")
 sim_length= size(u, 2);

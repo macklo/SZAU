@@ -1,3 +1,7 @@
+close all
+clear
+clc
+
 load("./data/dane_ucz.mat")
 sim_length = size(u, 2);
 figure
@@ -11,6 +15,8 @@ figure
 		xlabel("k")
 		ylabel("u")
 		
+print(gcf,'./fig/dane_ucz', '-dmeta')
+
 load("./data/dane_wer.mat")
 figure
 	subplot(2, 1, 1)
@@ -22,3 +28,4 @@ figure
 		stairs(1:sim_length, u)
 		xlabel("k")
 		ylabel("u")
+print(gcf,'./fig/dane_wer', '-dmeta')

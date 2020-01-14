@@ -2,20 +2,21 @@ close all
 clear
 clc
 
-N = 200;
-Nu = 200;
-lambda = 100;
+N = 20;
+Nu = 20;
+lambda = 3;
 
 
 delta=1e-5;
 tau=4;
-sim_length = 200;
+sim_length = 2000;
 
-y_zad = build_random_setpoints_array(struct("y", 0), sim_length, 20, 20, 0, 8);
+y_zad = build_random_setpoints_array(struct("y", 0), sim_length, 100, 100, -0.4, 2.4);
 
 u = zeros(1, sim_length);
 y_o = zeros(1, sim_length);
 y_mlin = zeros(1, sim_length);
+y_nn = zeros(1, sim_length);
 x1_o = zeros(1, sim_length);
 x2_o = zeros(1, sim_length);
 b4 = zeros(1, sim_length);
@@ -25,6 +26,7 @@ a2 = zeros(1, sim_length);
 
 
 for k = tau+2:sim_length
+	k
   %1. Symulacja obiektu -> pomiar y(k)
   [x1_o(k), x2_o(k), y_o(k)] = object(u(k-4),x1_o(k-1),x2_o(k-1));
   
@@ -39,7 +41,7 @@ for k = tau+2:sim_length
           nn(u(k-4), u(k-5), y_o(k-1), y_o(k-2)))/delta;
       
   y_mlin(k) = b4(k)*u(k-4) +b5(k)*u(k-5) -a1(k)*y_o(k-1)-a2(k)*y_o(k-2);
-  
+  y_nn(k) = nn(u(k-4), u(k-5), y_o(k-1), y_o(k-2));
   %3. Oblicz odp. skokow¹
   sc=zeros(1, N);
   sc(4)=b4(k);
@@ -82,10 +84,22 @@ for k = tau+2:sim_length
   u(k) = u(k-1) + deltaU(1);
   
   %10. Ewentualnie przytnij
-% 	if(u(k) > 1)
-% 		u(k) = 1;
-% 	elseif (u(k) < -1)
-% 		u(k) = -1;
-%     end
+	if(u(k) > 1)
+		u(k) = 1;
+	elseif (u(k) < -1)
+		u(k) = -1;
+	end
     
 end
+
+figure
+	subplot(2, 1, 1)
+		hold on
+		stairs(1:sim_length, y_o)
+		stairs(1:sim_length, y_zad)
+		stairs(1:sim_length, y_nn)
+		title("Przebieg")
+		
+	subplot(2, 1, 2)
+		hold on
+		stairs(1:sim_length, u)

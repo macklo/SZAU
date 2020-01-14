@@ -16,7 +16,7 @@ best_wer = min(E_wer, [], 2);
 run("sieci_output/model_6_4.m")
 sim_length = 2000;
 
-y_zad = build_random_setpoints_array(struct("y", 0), sim_length, 50, 50, -0.4, 2.4);
+y_zad = build_random_setpoints_array(struct("y", 0), sim_length, 100, 100, -0.4, 2.4);
 
 u = zeros(1, sim_length);
 y = zeros(1, sim_length);
@@ -26,9 +26,9 @@ x2 = zeros(1, sim_length);
 
 load("data/lin.mat")
 
-N = 200;
-Nu = 150;
-lambda = 1;
+N = 20;
+Nu = 20;
+lambda = 10;
 
 na = 2;
 nb = 5;
